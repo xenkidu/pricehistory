@@ -1,12 +1,19 @@
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Base Title</title>
-</head>
-<body>
-    {% block content %}
-
-    {% endblock %}
-</body>
+    <head>
+            <!-- Required meta tags -->
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+        {% include 'css.html' %}
+        {% block title %}
+        {% endblock %}
+    </head>
+    <body>
+        {% include 'navbar.html' %}
+        <div class="container">
+            {% block content %}{% endblock %}
+        </div>
+    {% include 'js.html' %}
+    </body>
 </html>

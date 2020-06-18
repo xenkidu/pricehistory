@@ -1,6 +1,12 @@
 {% extends 'base.html' %}
 
+{% block title %}
+<title>{{ title }}</title>
+{% endblock %}
+
+
 {% block content%}
 <h1>About This App!</h1>
-
+<p>{{ title }}</p>
+<p>{{ description }}</p>
 {% endblock %}
