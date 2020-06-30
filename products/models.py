@@ -61,12 +61,13 @@ class Product(models.Model):
         # set header info
         params, referer, headers = self.set_header_info()
         # perform a random sleep
-        time.sleep(random.random() * 1)
+        # time.sleep(random.random() * 1)
         # perform a request and fetch data with soup
         r = requests.get(url=self.homedepot_url, params=params, headers=headers)
         soup = BeautifulSoup(r.content, features="html.parser")
         # get price and strip whitespace
         price = soup.find('span', attrs={'class': 'price__dollars'})
+        cents = soup.find('span', attrs={'class': 'price__cents'})
         if not price:
             price = -1
         else:
@@ -80,4 +81,4 @@ class Price(models.Model):
     date = models.DateField(auto_now=True)
 
     def __str__(self):
-        return f"date: {self.date}, price: {self.price}"
+        return f"product_id: {self.product.id}, price: {self.price}"

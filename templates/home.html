@@ -8,11 +8,25 @@
 
 
 {% block content%}
-<h1>Welcome to Home/Base Template!</h1>
+<h1 class="text-center">Welcome to Price History!</h1>
+<div class="row">
+    <div class="col-md-10 offset-md-1">
+        <div class="row">
+            {% for product in products %}
+            <div class="col-sm">
+                <div class="card">
+                    <div class="card-header p-2">
+                        <a href="/product/{{ product.id }}/"><img class="card-img-top" src="{{ product.image_url }}"/></a>
+                    </div>
+                    <div class="card-body">
+                        <p class="card-title text-center"> {{ product.title }} </p>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</div>
 
-<ul>
-    {% for product in products %}
-    <li>{{ forloop.counter }} - {{ product.title }}</li>
-    {% endfor %}
-</ul>
+
 {% endblock %}

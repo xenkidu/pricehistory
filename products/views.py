@@ -6,8 +6,8 @@ import datetime
 # Create your views here.
 
 
-def product_detail_view(request):
-    obj = Product.objects.get(id=4)
+def product_detail_view(request, id):
+    obj = Product.objects.get(id=id)
     price = Product.get_product_price(obj)
     context = {
         'title': obj.title,
