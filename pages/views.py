@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.http import HttpResponse
 
-from products.models import Product
+from products.models import Product, Price
 # Create your views here.
 
 
