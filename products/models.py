@@ -55,6 +55,9 @@ class Product(models.Model):
         return params, referer, headers
 
     def get_product_price(self):
+        price = self.price_set.filter(date=datetime.date.today())
+        if price:
+            return price[0]
         # set header info
         params, referer, headers = self.set_header_info()
         # perform a random sleep
@@ -68,10 +71,13 @@ class Product(models.Model):
             price = -1
         else:
             price = int(price.text.strip().replace(',', ''))
-        self.price_set.create(price=price)
+        return self.price_set.create(price=price)
+
 
 class Price(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=12)
     date = models.DateField(auto_now=True)
 
+    def __str__(self):
+        return f"date: {self.date}, price: {self.price}"

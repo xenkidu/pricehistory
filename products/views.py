@@ -8,8 +8,7 @@ import datetime
 
 def product_detail_view(request):
     obj = Product.objects.get(id=4)
-    Product.get_product_price(obj)
-    price = obj.price_set.get(date=datetime.date.today())
+    price = Product.get_product_price(obj)
     context = {
         'title': obj.title,
         'img_url': obj.image_url,
