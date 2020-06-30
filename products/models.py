@@ -66,12 +66,14 @@ class Product(models.Model):
         r = requests.get(url=self.homedepot_url, params=params, headers=headers)
         soup = BeautifulSoup(r.content, features="html.parser")
         # get price and strip whitespace
-        price = soup.find('span', attrs={'class': 'price__dollars'})
-        cents = soup.find('span', attrs={'class': 'price__cents'})
+        price = soup.find('span', attrs={'class': 'price__dollars'}).text.strip().replace(',', '')
+        cents = soup.find('span', attrs={'class': 'price__cents'}).text.strip()
+        print('price:', price)
+        print('cents:', cents)
         if not price:
             price = -1
         else:
-            price = int(price.text.strip().replace(',', ''))
+            price = float(price + '.' + cents)
         return self.price_set.create(price=price)
 
 

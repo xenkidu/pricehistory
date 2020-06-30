@@ -12,18 +12,22 @@
 <div class="row">
     <div class="col-md-10 offset-md-1">
         <div class="row">
-            {% for product in products %}
+        {% for product in products %}
             <div class="col-sm">
                 <div class="card">
                     <div class="card-header p-2">
                         <a href="/product/{{ product.id }}/"><img class="card-img-top" src="{{ product.image_url }}"/></a>
                     </div>
                     <div class="card-body">
-                        <p class="card-title text-center"> {{ product.title }} </p>
+                        <p class="card-title text-center">{{forloop.counter0}} {{ product.title }} </p>
                     </div>
                 </div>
             </div>
-            {% endfor %}
+        {% if forloop.counter|divisibleby:"5" %}
+        </div>
+        <div class="row">
+        {% endif %}
+        {% endfor %}
         </div>
     </div>
 </div>
