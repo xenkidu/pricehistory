@@ -7,12 +7,11 @@
 {% block content%}
 
 <div class="row">
-    <div class="col-md-4 offset-4">
-        <div class="card" >
-          <img class="card-img-top" src="{{ img_url }}" alt="Card image cap">
+    <div class="col-md-10 offset-md-1">
+        <h5 class="text-center">${{ price }} : {{ title }}</h5>
+        <div class="card p-2" >
+          <img class="card-img-top" style="width: 20rem; " src="{{ img_url }}" alt="Card image cap">
           <div class="card-body">
-            <h5 class="card-title">{{ title }}</h5>
-            <h3>${{ price }}</h3>
             <p class="card-text">{{ description }}</p>
             <h3>Chart/History</h3>
           </div>
