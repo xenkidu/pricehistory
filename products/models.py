@@ -60,7 +60,6 @@ class Product(models.Model):
         return params, referer, headers
 
     def get_product_price(self):
-        self.make_chart()
         price = self.price_set.filter(date=datetime.date.today())
         if price:
             return price[0]
@@ -78,15 +77,18 @@ class Product(models.Model):
             price = -1
         else:
             price = float(price + '.' + cents)
-        return self.price_set.create(price=price)
+        output = self.price_set.create(price=price)
+        self.make_chart()
+        return output
 
     def make_chart(self):
         self.price_chart = f'chart_{self.id}.png'
+        self.save()
         all_prices = list(self.price_set.all())
 
         dates = [str(p.date) for p in all_prices]
         prices = [float(p.price) for p in all_prices]
-        average = sum(prices) // len(prices)
+        average = sum(prices) / len(prices)
 
         fig = Figure()
         ax = fig.subplots()

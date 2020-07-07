@@ -8,7 +8,8 @@ from products.models import Product, Price
 def home_view(request, *args, **kwargs):
     # return HttpResponse("<h1>Welcome to Home Depot Price History!</h1>")
     context = {
-        'products': Product.objects.all()
+        'products': Product.objects.all(),
+        'title': 'Price History',
     }
     return render(request, "home.html", context)
 
