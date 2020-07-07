@@ -7,7 +7,7 @@ from bs4 import BeautifulSoup
 
 import matplotlib.pyplot as plt
 import numpy as np
-
+from matplotlib.figure import Figure
 import random
 
 
@@ -74,8 +74,6 @@ class Product(models.Model):
         # get price and strip whitespace
         price = soup.find('span', attrs={'class': 'price__dollars'}).text.strip().replace(',', '')
         cents = soup.find('span', attrs={'class': 'price__cents'}).text.strip()
-        print('price:', price)
-        print('cents:', cents)
         if not price:
             price = -1
         else:
@@ -83,24 +81,26 @@ class Product(models.Model):
         return self.price_set.create(price=price)
 
     def make_chart(self):
-        dates = ['6-20-2020','6-21-2020','6-22-2020',]
-        prices = [99, 109, 128]
+        self.price_chart = f'chart_{self.id}.png'
+        all_prices = list(self.price_set.all())
+
+        dates = [str(p.date) for p in all_prices]
+        prices = [float(p.price) for p in all_prices]
         average = sum(prices) // len(prices)
 
-        fig, ax = plt.subplots()
+        fig = Figure()
+        ax = fig.subplots()
         ax.plot(dates, prices)
         ax.plot(dates, [average for _ in range(len(dates))], label="Average")
         ax.legend()
-        ax.set_xticks(np.linspace(1, len(dates) - 1, num=len(prices) % 10))
-        plt.xticks(rotation=18)
-        self.price_chart = f'chart_{self.id}.png'
+        ax.set_xticks(np.linspace(0, len(dates) - 1, num=len(prices) % 10))
+        ax.set_xticklabels(dates, rotation=18)
         fig.savefig(f'./products/static/products/{self.price_chart}')
-        # plt.show()
 
 class Price(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
     price = models.DecimalField(decimal_places=2, max_digits=12)
-    date = models.DateField(auto_now=True)
+    date = models.DateField(auto_now_add=True)
 
     def __str__(self):
         return f"product_id: {self.product.id}, price: {self.price}"
