@@ -10,6 +10,7 @@ import numpy as np
 
 import random
 
+
 class Product(models.Model):
     title = models.CharField(max_length=120,)
     description = models.TextField(blank=True)
@@ -59,6 +60,7 @@ class Product(models.Model):
         return params, referer, headers
 
     def get_product_price(self):
+        self.make_chart()
         price = self.price_set.filter(date=datetime.date.today())
         if price:
             return price[0]
@@ -81,18 +83,18 @@ class Product(models.Model):
         return self.price_set.create(price=price)
 
     def make_chart(self):
-        dates = []
-        prices = []
+        dates = ['6-20-2020','6-21-2020','6-22-2020',]
+        prices = [99, 109, 128]
         average = sum(prices) // len(prices)
 
         fig, ax = plt.subplots()
         ax.plot(dates, prices)
         ax.plot(dates, [average for _ in range(len(dates))], label="Average")
         ax.legend()
-        ax.set_xticks(np.linspace(1, len(dates) - 1, num=10))
+        ax.set_xticks(np.linspace(1, len(dates) - 1, num=len(prices) % 10))
         plt.xticks(rotation=18)
         self.price_chart = f'chart_{self.id}.png'
-        fig.savefig(f'/static/{self.price_chart}')
+        fig.savefig(f'./products/static/products/{self.price_chart}')
         # plt.show()
 
 class Price(models.Model):
