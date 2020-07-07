@@ -4,6 +4,10 @@ import datetime
 import time
 import requests
 from bs4 import BeautifulSoup
+
+import matplotlib.pyplot as plt
+import numpy as np
+
 import random
 
 class Product(models.Model):
@@ -76,6 +80,20 @@ class Product(models.Model):
             price = float(price + '.' + cents)
         return self.price_set.create(price=price)
 
+    def make_chart(self):
+        dates = []
+        prices = []
+        average = sum(prices) // len(prices)
+
+        fig, ax = plt.subplots()
+        ax.plot(dates, prices)
+        ax.plot(dates, [average for _ in range(len(dates))], label="Average")
+        ax.legend()
+        ax.set_xticks(np.linspace(1, len(dates) - 1, num=10))
+        plt.xticks(rotation=18)
+        self.price_chart = f'chart_{self.id}.png'
+        fig.savefig(f'/static/{self.price_chart}')
+        # plt.show()
 
 class Price(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)

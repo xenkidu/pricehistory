@@ -12,6 +12,7 @@ def product_detail_view(request, id):
     context = {
         'title': obj.title,
         'img_url': obj.image_url,
+        'price_chart': obj.price_chart,
         'description': obj.description,
         'price': price.price,
     }
