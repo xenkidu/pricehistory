@@ -21,7 +21,9 @@
                 </div>
                 <div class="col-md-7">
                     <h3 class="text-center">Price History</h3>
-                    <img class="card-img-top" src="{% static 'products/' %}{{price_chart}}" alt="Card image cap">
+                    {% with 'products/'|add:price_chart as image_static %}
+                    <img class="card-img-top" src="{% static image_static %}" alt="Card image cap">
+                    {% endwith %}
                 </div>
             </div>
           <div class="card-body">
