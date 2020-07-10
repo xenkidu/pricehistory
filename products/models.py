@@ -68,18 +68,18 @@ class Product(models.Model):
         # perform a random sleep
         # time.sleep(random.random() * 1)
         # perform a request and fetch data with soup
-        r = requests.get(url=self.homedepot_url, params=params, headers=headers)
+        r = requests.get(url=self.homedepot_url, params=params, headers=headers, timeout=5)
         soup = BeautifulSoup(r.content, features="html.parser")
         # get price and strip whitespace
         price = soup.find('span', attrs={'class': 'price__dollars'}).text.strip().replace(',', '')
         cents = soup.find('span', attrs={'class': 'price__cents'}).text.strip()
+
         if not price:
             price = -1
         else:
             price = float(price + '.' + cents)
-        output = self.price_set.create(price=price)
-        self.make_chart()
-        return output
+
+        return self.price_set.create(price=price)
 
     def make_chart(self):
         self.price_chart = f'chart_{self.id}.png'
@@ -98,6 +98,7 @@ class Product(models.Model):
         ax.set_xticks(np.linspace(0, len(dates) - 1, num=len(prices) % 10))
         ax.set_xticklabels(dates, rotation=18)
         fig.savefig(f'./products/static/products/{self.price_chart}')
+
 
 class Price(models.Model):
     product = models.ForeignKey(Product, on_delete=models.CASCADE)
