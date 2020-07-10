@@ -68,7 +68,7 @@ class Product(models.Model):
         # perform a random sleep
         # time.sleep(random.random() * 1)
         # perform a request and fetch data with soup
-        r = requests.get(url=self.homedepot_url, params=params, headers=headers, timeout=5)
+        r = requests.get(url=self.homedepot_url, params=params, headers=headers, timeout=10)
         soup = BeautifulSoup(r.content, features="html.parser")
         # get price and strip whitespace
         price = soup.find('span', attrs={'class': 'price__dollars'}).text.strip().replace(',', '')
